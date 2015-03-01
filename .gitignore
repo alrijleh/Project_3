@@ -44,8 +44,8 @@
 *.bak
 *.[Cc]ache
 *.ilk
-*.log
-*.tlog
+*.log*
+*.tlog*
 *.lib
 *.sbr
 *.sdf

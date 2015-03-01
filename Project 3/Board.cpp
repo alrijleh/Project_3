@@ -47,24 +47,34 @@ void board::initialize(ifstream &fin)
 			// If the read char is not Blank
 			if (ch != '.')
 			{
-				setCell(i, j, ch - '0');   // Convert char to int
+				ch = ch - '0'; // Convert char to int
+				if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
+				{
+					setCell(i, j, ch);
+				}
+				else
+				{
+					throw rangeError("invalid input board");
+				}
 			}
 		}
 	}
 }
 
+//returns true if a conflict is found
+//returns false if the move is legal
 bool board::checkConflicts(int i, int j, int v)
 {
 	//check horizantal
 	for (int index = 0; index < MaxValue; index++)
 	{
-		if (value[index][j] == v) return false;
+		if (value[index][j] == v) return true;
 	}
 
 	//check vertical
 	for (int index = 0; index < MaxValue; index++)
 	{
-		if (value[i][index] == v) return false;
+		if (value[i][index] == v) return true;
 	}
 
 	//check square
@@ -73,17 +83,19 @@ bool board::checkConflicts(int i, int j, int v)
 
 	int baseI = ((squareNum - 1) % squareWidth) * squareWidth;
 	int baseJ = ((squareNum - 1) / squareWidth) * squareWidth;
+	int maxI = baseI + squareWidth;
+	int maxJ = baseJ + squareWidth;
 
-	for (int x = baseI; x < x + squareWidth; x++)
+	for (int x = baseI; x < maxI; x++)
 	{
-		for (int y = baseJ; y < y + squareWidth; y++)
+		for (int y = baseJ; y < maxJ; y++)
 		{
-			if (value[x][y] == v) return false;
+			if (value[x][y] == v) return true;
 		}
 	}
 	
 	//no conflicts were found
-	return true;
+	return false;
 }
 
 // Returns the value stored in a cell.  Throws an exception
