@@ -19,6 +19,7 @@ public:
 	void clear(int i, int j);
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
+	bool checkConflicts(int i, int j, int v);
 	void print();
 	void printConflicts();
 	bool isBlank(int, int);

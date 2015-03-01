@@ -27,8 +27,8 @@ void board::clear(int row, int col)
 void board::setCell(int row, int col, int v)
 {
 	// Set cell value
-	if (v >= 0 && v <= 9) value[row][col] = v;
-	else throw rangeError("Value in grid must be between 0 and 9");
+	if (v >= MinValue && v <= MaxValue) value[row][col] = v;
+	else throw rangeError("Value in grid must be between MinValue and MaxValue");
 }
 
 // Read a Sudoku board from the input file.
@@ -51,6 +51,39 @@ void board::initialize(ifstream &fin)
 			}
 		}
 	}
+}
+
+bool board::checkConflicts(int i, int j, int v)
+{
+	//check horizantal
+	for (int index = 0; index < MaxValue; index++)
+	{
+		if (value[index][j] == v) return false;
+	}
+
+	//check vertical
+	for (int index = 0; index < MaxValue; index++)
+	{
+		if (value[i][index] == v) return false;
+	}
+
+	//check square
+	int squareNum = squareNumber(i, j);
+	int squareWidth = sqrt(MaxValue);
+
+	int baseI = ((squareNum - 1) % squareWidth) * squareWidth;
+	int baseJ = ((squareNum - 1) / squareWidth) * squareWidth;
+
+	for (int x = baseI; x < x + squareWidth; x++)
+	{
+		for (int y = baseJ; y < y + squareWidth; y++)
+		{
+			if (value[x][y] == v) return false;
+		}
+	}
+	
+	//no conflicts were found
+	return true;
 }
 
 // Returns the value stored in a cell.  Throws an exception
