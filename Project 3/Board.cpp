@@ -113,3 +113,23 @@ void board::print()
 	cout << "-";
 	cout << endl;
 }
+
+//Check to see if board is solved
+bool checkSolved(board b)
+{
+	for (int i = 1; i <= BoardSize; i++)
+	{
+		for (int j = 1; j <= BoardSize; j++)
+		{
+			//If any cells are 0, board is not solved.
+			if (b.getCell(i, j) == 0)
+			{
+				cout << "Board is not solved." << endl;
+				return false;
+			}
+		}
+	}
+
+	cout << "Board solved." << endl;
+	return true;
+}

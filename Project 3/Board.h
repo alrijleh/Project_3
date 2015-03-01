@@ -24,6 +24,7 @@ public:
 	bool isBlank(int, int);
 	ValueType getCell(int, int);	
 	int squareNumber(int i, int j);
+	bool checkSolved(board b);
 
 private:
 	// The following matrices go from 1 to BoardSize in each

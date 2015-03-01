@@ -27,8 +27,9 @@ int main()
 			b1.initialize(fin);
 			b1.print();
 			//b1.printConflicts();
-			system("pause");
+			b1.checkSolved(b1);
 		}
+		system("pause");
 	}
 	catch (indexRangeError &ex)
 	{
