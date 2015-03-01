@@ -13,4 +13,4 @@ const int BoardSize = SquareSize * SquareSize;
 const int MinValue = 1;
 const int MaxValue = 9;
 
-int numSolutions = 0;
+//int numSolutions = 0;

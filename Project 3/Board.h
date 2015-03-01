@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include <list>
 #include <fstream>
+#include <vector>
 
 using namespace std; 
 
@@ -16,15 +17,21 @@ class board
 public:
 	board(int);
 	void clear();
+	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
 	void print();
 	bool isBlank(int, int);
 	ValueType getCell(int, int);
+	
+	int squareNumber(int i, int j);
 
 private:
-
 	// The following matrices go from 1 to BoardSize in each
 	// dimension.  I.e. they are each (BoardSize+1) X (BoardSize+1)
-
 	matrix<ValueType> value;
+
+	// Conflict matrices 
+	matrix<bool> conflictRow;
+	matrix<bool> conflictCol;
+	matrix<bool> conflictSq;
 };

@@ -7,6 +7,7 @@
 #include "Board.h"
 #include <list>
 #include <fstream>
+#include <vector>
 
 #pragma once
 class Main
