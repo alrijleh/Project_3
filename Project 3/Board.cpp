@@ -1,22 +1,9 @@
 #include "Board.h"
 
-board::board(int sqSize): value(BoardSize + 1, BoardSize + 1)
+board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 // Board constructor
 {
-	conflictRow.resize(MaxValue, MaxValue);
-	conflictCol.resize(MaxValue, MaxValue);
-	conflictSq.resize(MaxValue, MaxValue);
 
-	//Initialize conflict info
-	for (int i = 0; i < MaxValue; i++)
-	{
-		for (int j = 0; j < MaxValue; j++)
-		{
-			conflictRow[i][j] = false;
-			conflictCol[i][j] = false;
-			conflictSq[i][j] = false;
-		}
-	}
 }
 
 int board::squareNumber(int i, int j)
@@ -29,34 +16,29 @@ int board::squareNumber(int i, int j)
 	return SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1;
 }
 
-void board::clear()
+void board::clear(int row, int col)
+// Mark all possible values as legal for each board entry
 {
+
 }
 
+// SetCell function to define a value to a cell as well as update the
+// conflict vectors accordingly
 void board::setCell(int row, int col, int v)
 {
-	int sq = squareNumber(row, col); 
-	
-	if (conflictRow[row - 1][v - 1] == false && conflictCol[col - 1][v - 1] == false && conflictSq[sq - 1][v - 1] == false)
-	{
-		//Set cell value
-		value[row][col] = v;
-
-		//Update conflict info
-		conflictRow[row - 1][v - 1] = true;
-		conflictCol[col - 1][v - 1] = true;
-		conflictSq[sq - 1][v - 1] = true;
-	}
+	// Set cell value
+	value[row][col] = v;
 }
 
 void board::initialize(ifstream &fin)
 // Read a Sudoku board from the input file.
 {
 	char ch;
-
-	clear();
+	/*int i = 1, j = 1;
+	clear(i, j);*/
 
 	for (int i = 1; i <= BoardSize; i++)
+	{
 		for (int j = 1; j <= BoardSize; j++)
 		{
 			fin >> ch;
@@ -65,16 +47,18 @@ void board::initialize(ifstream &fin)
 			if (ch != '.')
 			{
 				setCell(i, j, ch - '0');   // Convert char to int
+
 			}
 		}
+	}
 }
 
 ostream &operator<<(ostream &ostr, vector<int> &v)
 // Overloaded output operator for vector class.
 {
-	for (int i = 0; i < v.size(); i++)
+	for (int i = 0; i <= v.size(); i++)
 		ostr << v[i] << " ";
-	ostr << endl;
+	cout << endl;
 	return ostr;
 }
 
@@ -93,6 +77,8 @@ bool board::isBlank(int i, int j)
 {
 	if (i < 1 || i > BoardSize || j < 1 || j > BoardSize)
 		throw rangeError("bad value in setCell");
+
+	return (getCell(i, j) == Blank);
 }
 
 void board::print()

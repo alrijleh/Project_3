@@ -16,13 +16,13 @@ class board
 {
 public:
 	board(int);
-	void clear();
+	void clear(int i, int j);
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
 	void print();
+	void printConflicts();
 	bool isBlank(int, int);
-	ValueType getCell(int, int);
-	
+	ValueType getCell(int, int);	
 	int squareNumber(int i, int j);
 
 private:

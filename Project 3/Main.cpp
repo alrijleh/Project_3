@@ -27,6 +27,7 @@ int main()
 			b1.initialize(fin);
 			b1.print();
 			//b1.printConflicts();
+			system("pause");
 		}
 	}
 	catch (indexRangeError &ex)
@@ -34,6 +35,4 @@ int main()
 		cout << ex.what() << endl;
 		exit(1);
 	}
-
-	system("pause");
 }
