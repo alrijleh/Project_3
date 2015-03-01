@@ -1,14 +1,14 @@
 #include "Board.h"
 
-board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 // Board constructor
+board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 {
 
 }
 
-int board::squareNumber(int i, int j)
 // Return the square number of cell i,j (counting from left to right,
 // top to bottom.  Note that i and j each go from 1 to BoardSize
+int board::squareNumber(int i, int j)
 {
 	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
 	// coordinates of the square that i,j is in.  
@@ -16,8 +16,8 @@ int board::squareNumber(int i, int j)
 	return SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1;
 }
 
-void board::clear(int row, int col)
 // Mark all possible values as legal for each board entry
+void board::clear(int row, int col)
 {
 
 }
@@ -27,11 +27,12 @@ void board::clear(int row, int col)
 void board::setCell(int row, int col, int v)
 {
 	// Set cell value
-	value[row][col] = v;
+	if (v >= 0 && v <= 9) value[row][col] = v;
+	else throw rangeError("Value in grid must be between 0 and 9");
 }
 
-void board::initialize(ifstream &fin)
 // Read a Sudoku board from the input file.
+void board::initialize(ifstream &fin)
 {
 	char ch;
 	/*int i = 1, j = 1;
@@ -47,24 +48,14 @@ void board::initialize(ifstream &fin)
 			if (ch != '.')
 			{
 				setCell(i, j, ch - '0');   // Convert char to int
-
 			}
 		}
 	}
 }
 
-ostream &operator<<(ostream &ostr, vector<int> &v)
-// Overloaded output operator for vector class.
-{
-	for (int i = 0; i <= v.size(); i++)
-		ostr << v[i] << " ";
-	cout << endl;
-	return ostr;
-}
-
-ValueType board::getCell(int i, int j)
 // Returns the value stored in a cell.  Throws an exception
 // if bad values are passed.
+ValueType board::getCell(int i, int j)
 {
 	if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
 		return value[i][j];
@@ -72,8 +63,8 @@ ValueType board::getCell(int i, int j)
 		throw rangeError("bad value in getCell");
 }
 
-bool board::isBlank(int i, int j)
 // Returns true if cell i,j is blank, and false otherwise.
+bool board::isBlank(int i, int j)
 {
 	if (i < 1 || i > BoardSize || j < 1 || j > BoardSize)
 		throw rangeError("bad value in setCell");
@@ -81,8 +72,8 @@ bool board::isBlank(int i, int j)
 	return (getCell(i, j) == Blank);
 }
 
-void board::print()
 // Prints the current board.
+void board::print()
 {
 	for (int i = 1; i <= BoardSize; i++)
 	{
@@ -115,7 +106,7 @@ void board::print()
 }
 
 //Check to see if board is solved
-bool checkSolved(board b)
+bool board::checkSolved(board b)
 {
 	for (int i = 1; i <= BoardSize; i++)
 	{
@@ -132,4 +123,13 @@ bool checkSolved(board b)
 
 	cout << "Board solved." << endl;
 	return true;
+}
+
+// Overloaded output operator for vector class.
+ostream &operator<<(ostream &ostr, vector<int> &v)
+{
+	for (int i = 0; i <= v.size(); i++)
+		ostr << v[i] << " ";
+	ostr << endl;
+	return ostr;
 }
