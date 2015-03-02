@@ -16,7 +16,7 @@ class board
 {
 public:
 	board(int);
-	void clear(int i, int j);
+	void clear();
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
 	void print();
