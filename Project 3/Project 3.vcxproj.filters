@@ -30,6 +30,9 @@
     <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -38,5 +41,19 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sudoku.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
