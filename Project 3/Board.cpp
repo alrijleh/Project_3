@@ -1,9 +1,23 @@
 #include "Board.h"
 
+board::board()
+{
+	horzConflicts.resize(MaxValue);
+	vertConflicts.resize(MaxValue);
+	squareConflicts.resize(MaxValue);
+}
+
+board::~board()
+{
+
+}
+
 // Board constructor
 board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 {
-
+	horzConflicts.resize(MaxValue);
+	vertConflicts.resize(MaxValue);
+	squareConflicts.resize(MaxValue);
 }
 
 // Return the square number of cell i,j (counting from left to right,
@@ -38,9 +52,9 @@ void board::initialize(ifstream &fin)
 	/*int i = 1, j = 1;
 	clear(i, j);*/
 
-	for (int i = 1; i <= BoardSize; i++)
+	for (int i = 0; i < BoardSize; i++)
 	{
-		for (int j = 1; j <= BoardSize; j++)
+		for (int j = 0; j < BoardSize; j++)
 		{
 			fin >> ch;
 
@@ -65,19 +79,45 @@ void board::initialize(ifstream &fin)
 //returns false if the move is legal
 bool board::checkConflicts(int i, int j, int v)
 {
-	//check horizantal
+	if (checkHorzConflict(i, j, v)
+		|| checkVertConflict(i, j, v)
+		|| checkSquareConflict(i, j, v))
+	{
+		return true;
+	}
+	else return false;
+}
+
+bool board::checkVertConflict(int i, int j, int v)
+{
+	vertConflicts[j] = false;
 	for (int index = 0; index < MaxValue; index++)
 	{
-		if (value[index][j] == v) return true;
+		if (value[i][index] == v)
+		{
+			vertConflicts[j] = true;
+			return true;
+		}
 	}
+	return false;
+}
 
-	//check vertical
+bool board::checkHorzConflict(int i, int j, int v)
+{
+	horzConflicts[i] = false;
 	for (int index = 0; index < MaxValue; index++)
 	{
-		if (value[i][index] == v) return true;
+		if (value[index][j] == v)
+		{
+			horzConflicts[i] = true;
+			return true;
+		}
 	}
+	return false;
+}
 
-	//check square
+bool board::checkSquareConflict(int i, int j, int v)
+{
 	int squareNum = squareNumber(i, j);
 	int squareWidth = sqrt(MaxValue);
 
@@ -86,15 +126,19 @@ bool board::checkConflicts(int i, int j, int v)
 	int maxI = baseI + squareWidth;
 	int maxJ = baseJ + squareWidth;
 
+	squareConflicts[squareNum] = false;
+
 	for (int x = baseI; x < maxI; x++)
 	{
 		for (int y = baseJ; y < maxJ; y++)
 		{
-			if (value[x][y] == v) return true;
+			if (value[x][y] == v)
+			{
+				squareConflicts[squareNum] = true;
+				return true;
+			}
 		}
 	}
-	
-	//no conflicts were found
 	return false;
 }
 

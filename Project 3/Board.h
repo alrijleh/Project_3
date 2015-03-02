@@ -15,11 +15,14 @@ class board
 	// Stores the entire Sudoku board
 {
 public:
+	board();
+	~board();
 	board(int);
+
 	void clear(int i, int j);
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
-	bool checkConflicts(int i, int j, int v);
+	
 	void print();
 	void printConflicts();
 	bool isBlank(int, int);
@@ -27,10 +30,20 @@ public:
 	int squareNumber(int i, int j);
 	bool checkSolved(board b);
 
+	bool checkConflicts(int i, int j, int v);
+	bool checkVertConflict(int i, int j, int v);
+	bool checkHorzConflict(int i, int j, int v);
+	bool checkSquareConflict(int i, int j, int v);
+
 private:
 	// The following matrices go from 1 to BoardSize in each
 	// dimension.  I.e. they are each (BoardSize+1) X (BoardSize+1)
 	matrix<ValueType> value;
+	vector<vector<int>> conflicts;
+
+	vector<bool> vertConflicts;
+	vector<bool> horzConflicts;
+	vector<bool> squareConflicts;
 
 	// Conflict matrices 
 	matrix<bool> conflictRow;
