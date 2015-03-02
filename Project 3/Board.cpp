@@ -4,7 +4,7 @@
 template<typename T>
 ostream &operator<<(ostream &ostr, vector<T> &v)
 {
-	for (int i = 0; i <= v.size(); i++)
+	for (int i = 0; i < v.size(); i++)
 		ostr << v[i] << " ";
 	ostr << endl;
 	return ostr;
@@ -74,13 +74,26 @@ void board::initialize(ifstream &fin)
 			if (ch != '.')
 			{
 				ch = ch - '0'; // Convert char to int
-				if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
+				//if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
+				//{
+				//	setCell(i, j, ch);
+				//}
+				//else
+				//{
+				//	throw rangeError("invalid input board");
+				//}
+
+				try
 				{
-					setCell(i, j, ch);
+					if (!checkConflicts(i, j, ch)) //if there are no conflicts
+					{
+						setCell(i, j, ch);
+					}
 				}
-				else
+				catch (indexRangeError &ex)
 				{
-					throw rangeError("invalid input board");
+					cout << ex.what() << endl;
+					exit(1);
 				}
 			}
 		}
@@ -154,7 +167,7 @@ bool board::checkSquareConflict(int i, int j, int v)
 		{
 			if (value[x][y] == v)
 			{
-				squareConflicts[squareNum]++;
+				squareConflicts[squareNum-1]++;
 				conflict = true;
 			}
 		}
