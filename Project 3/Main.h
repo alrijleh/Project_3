@@ -8,12 +8,3 @@
 #include <list>
 #include <fstream>
 #include <vector>
-
-#pragma once
-class Main
-{
-public:
-	Main();
-	~Main();
-};
-

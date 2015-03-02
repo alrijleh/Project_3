@@ -1,5 +1,15 @@
 #include "Board.h"
 
+// Overloaded output operator for vector class.
+template<typename T>
+ostream &operator<<(ostream &ostr, vector<T> &v)
+{
+	for (int i = 0; i <= v.size(); i++)
+		ostr << v[i] << " ";
+	ostr << endl;
+	return ostr;
+}
+
 board::board()
 {
 	horzConflicts.resize(MaxValue);
@@ -33,7 +43,9 @@ int board::squareNumber(int i, int j)
 // Mark all possible values as legal for each board entry
 void board::clear(int row, int col)
 {
-
+	int prevValue = value[row][col];
+	value[row][col] = 0;
+													//NEEDS TO REDUCE CONFLICT / COUNT VECTORS
 }
 
 // SetCell function to define a value to a cell as well as update the
@@ -75,6 +87,14 @@ void board::initialize(ifstream &fin)
 	}
 }
 
+//prints the conflicts
+void board::printConflicts()
+{
+	cout << "vertical conflicts: " << vertConflicts << endl;
+	cout << "horizantal conflicts: " << horzConflicts << endl;
+	cout << "square conflicts: " << squareConflicts << endl;
+}
+
 //returns true if a conflict is found
 //returns false if the move is legal
 bool board::checkConflicts(int i, int j, int v)
@@ -90,30 +110,30 @@ bool board::checkConflicts(int i, int j, int v)
 
 bool board::checkVertConflict(int i, int j, int v)
 {
-	vertConflicts[j] = false;
+	bool conflict = false;
 	for (int index = 0; index < MaxValue; index++)
 	{
 		if (value[i][index] == v)
 		{
-			vertConflicts[j] = true;
-			return true;
+			vertConflicts[j]++;
+			conflict = true;
 		}
 	}
-	return false;
+	return conflict;
 }
 
 bool board::checkHorzConflict(int i, int j, int v)
 {
-	horzConflicts[i] = false;
+	bool conflict = false;
 	for (int index = 0; index < MaxValue; index++)
 	{
 		if (value[index][j] == v)
 		{
-			horzConflicts[i] = true;
-			return true;
+			horzConflicts[i]++;
+			conflict = true;
 		}
 	}
-	return false;
+	return conflict;
 }
 
 bool board::checkSquareConflict(int i, int j, int v)
@@ -126,7 +146,7 @@ bool board::checkSquareConflict(int i, int j, int v)
 	int maxI = baseI + squareWidth;
 	int maxJ = baseJ + squareWidth;
 
-	squareConflicts[squareNum] = false;
+	bool conflict = false;
 
 	for (int x = baseI; x < maxI; x++)
 	{
@@ -134,12 +154,12 @@ bool board::checkSquareConflict(int i, int j, int v)
 		{
 			if (value[x][y] == v)
 			{
-				squareConflicts[squareNum] = true;
-				return true;
+				squareConflicts[squareNum]++;
+				conflict = true;
 			}
 		}
 	}
-	return false;
+	return conflict;
 }
 
 // Returns the value stored in a cell.  Throws an exception
@@ -212,13 +232,4 @@ bool board::checkSolved(board b)
 
 	cout << "Board solved." << endl;
 	return true;
-}
-
-// Overloaded output operator for vector class.
-ostream &operator<<(ostream &ostr, vector<int> &v)
-{
-	for (int i = 0; i <= v.size(); i++)
-		ostr << v[i] << " ";
-	ostr << endl;
-	return ostr;
 }

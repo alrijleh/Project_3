@@ -24,7 +24,6 @@ public:
 	void initialize(ifstream &fin);
 	
 	void print();
-	void printConflicts();
 	bool isBlank(int, int);
 	ValueType getCell(int, int);	
 	int squareNumber(int i, int j);
@@ -34,19 +33,21 @@ public:
 	bool checkVertConflict(int i, int j, int v);
 	bool checkHorzConflict(int i, int j, int v);
 	bool checkSquareConflict(int i, int j, int v);
+	void printConflicts();
 
 private:
 	// The following matrices go from 1 to BoardSize in each
 	// dimension.  I.e. they are each (BoardSize+1) X (BoardSize+1)
+
 	matrix<ValueType> value;
-	vector<vector<int>> conflicts;
 
-	vector<bool> vertConflicts;
-	vector<bool> horzConflicts;
-	vector<bool> squareConflicts;
+	//counters
+	vector<int> inRow;
+	vector<int> inCol;
+	vector<int> inSquare;
 
-	// Conflict matrices 
-	matrix<bool> conflictRow;
-	matrix<bool> conflictCol;
-	matrix<bool> conflictSq;
+	//conflict vectors
+	vector<int> vertConflicts;
+	vector<int> horzConflicts;
+	vector<int> squareConflicts;
 };
