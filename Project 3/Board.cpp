@@ -4,7 +4,7 @@
 template<typename T>
 ostream &operator<<(ostream &ostr, vector<T> &v)
 {
-	for (int i = 0; i <= v.size(); i++)
+	for (int i = 0; i < v.size(); i++)
 		ostr << v[i] << " ";
 	ostr << endl;
 	return ostr;
@@ -53,7 +53,7 @@ void board::clear(int row, int col)
 void board::setCell(int row, int col, int v)
 {
 	// Set cell value
-	if (v >= MinValue && v <= MaxValue) value[row][col] = v;
+	if ((v >= MinValue && v <= MaxValue) || v == Blank) value[row][col] = v;
 	else throw rangeError("Value in grid must be between MinValue and MaxValue");
 }
 
@@ -64,9 +64,9 @@ void board::initialize(ifstream &fin)
 	/*int i = 1, j = 1;
 	clear(i, j);*/
 
-	for (int i = 0; i < BoardSize; i++)
+	for (int i = 1; i <= BoardSize; i++)
 	{
-		for (int j = 0; j < BoardSize; j++)
+		for (int j = 1; j <= BoardSize; j++)
 		{
 			fin >> ch;
 
@@ -74,14 +74,18 @@ void board::initialize(ifstream &fin)
 			if (ch != '.')
 			{
 				ch = ch - '0'; // Convert char to int
-				if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
-				{
+				//if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
+				//{
 					setCell(i, j, ch);
-				}
-				else
-				{
-					throw rangeError("invalid input board");
-				}
+				//}
+				//else
+				//{
+					//throw rangeError("invalid input board");
+				//}
+			}
+			else
+			{
+				setCell(i, j, Blank);
 			}
 		}
 	}
@@ -222,7 +226,7 @@ bool board::checkSolved(board b)
 		for (int j = 1; j <= BoardSize; j++)
 		{
 			//If any cells are 0, board is not solved.
-			if (b.getCell(i, j) == 0)
+			if (b.getCell(i, j) == Blank)
 			{
 				cout << "Board is not solved." << endl;
 				return false;
