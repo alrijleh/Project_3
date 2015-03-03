@@ -1,3 +1,9 @@
+/*
+Board.h
+Contains funcitonality for the board class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #pragma once
 
 #include <iostream>
@@ -19,9 +25,10 @@ public:
 	~board();
 	board(int);
 
-	void clear(int i, int j);
+	void clearCell(int i, int j);
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
+	void clearBoard();
 	
 	void print();
 	bool isBlank(int, int);

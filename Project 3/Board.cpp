@@ -1,3 +1,9 @@
+/*
+Board.cpp
+Contains funcitonality for the board class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #include "Board.h"
 
 // Overloaded output operator for vector class.
@@ -34,17 +40,35 @@ board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)
 }
 
 // Return the square number of cell i,j (counting from left to right,
-// top to bottom.  Note that i and j each go from 0 to BoardSize - 1
+// top to bottom.  Note that i and j each go from 1 to BoardSize
 int board::squareNumber(int i, int j)
 {
 	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
 	// coordinates of the square that i,j is in.  
 
-	return (SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1) - 1;
+	return (SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1);
+}
+
+void board::clearBoard()
+{
+	//There should be a better way to do this
+	int exclusiveMax = MaxValue + 1;
+	for (int index = 0; index <= MaxValue; index++)
+	{
+		inRow[index].clear();
+		inCol[index].clear();
+		inSquare[index].clear();
+		value[index].clear();
+
+		inRow[index].resize(exclusiveMax);
+		inCol[index].resize(exclusiveMax);
+		inSquare[index].resize(exclusiveMax);
+		value[index].resize(exclusiveMax);
+	}
 }
 
 // Mark all possible values as legal for each board entry
-void board::clear(int i, int j)
+void board::clearCell(int i, int j)
 {
 	int prevValue = value[i][j];
 	int squareNum = squareNumber(i, j);
@@ -68,6 +92,7 @@ void board::setCell(int row, int col, int v)
 // Read a Sudoku board from the input file.
 void board::initialize(ifstream &fin)
 {
+	clearBoard();
 	char ch;
 	/*int i = 1, j = 1;
 	clear(i, j);*/
@@ -81,9 +106,20 @@ void board::initialize(ifstream &fin)
 			// If the read char is not Blank
 			if (ch != '.')
 			{
-				ch = ch - '0'; // Convert char to int
-				setCell(i, j, ch);
-				updateVectors(i , j , ch);
+				int v = int(ch - '0'); // Convert char to int
+				if (!checkConflicts(i, j, v))
+				{
+					setCell(i, j, v);
+					updateVectors(i, j, v);
+				}
+				else
+				{
+					int squareNum = squareNumber(i, j);
+					if (inRow[j][v]) cout << "row " << j;
+					if (inCol[i][v]) cout << "column " << i;
+					if (inSquare[squareNum][v]) cout << "square " << squareNum;
+					throw rangeError("Invalid input board");
+				}
 			}
 			else
 			{
@@ -104,7 +140,8 @@ void board::updateVectors(int i, int j, int v)
 
 bool board::checkConflicts(int i, int j, int v)
 {
-	return (inRow[j][v] || inCol[i][v] || inSquare[i][j]);
+	int squareNum = squareNumber(i, j);
+	return (inRow[j][v] || inCol[i][v] || inSquare[squareNum][v]);
 }
 
 // Returns the value stored in a cell.  Throws an exception

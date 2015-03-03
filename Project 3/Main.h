@@ -1,3 +1,9 @@
+/*
+Main.h
+Contains includes for Main.cpp
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #pragma once
 #include <iostream>
 #include <limits.h>

@@ -1,3 +1,9 @@
+/*
+Main.cpp
+Contains main function body
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 // Declarations and functions for project #4
 
 #include "Main.h"

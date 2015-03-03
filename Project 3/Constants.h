@@ -1,3 +1,9 @@
+/*
+Constants.h
+Contains constants used in other files
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #pragma once
 
 typedef int ValueType; // The type of the value in a cell
