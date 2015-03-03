@@ -29,10 +29,9 @@ public:
 	int squareNumber(int i, int j);
 	bool checkSolved(board b);
 
+	void updateVectors(int i, int j, int v);
+
 	bool checkConflicts(int i, int j, int v);
-	bool checkVertConflict(int i, int j, int v);
-	bool checkHorzConflict(int i, int j, int v);
-	bool checkSquareConflict(int i, int j, int v);
 	void printConflicts();
 
 private:
@@ -42,12 +41,7 @@ private:
 	matrix<ValueType> value;
 
 	//counters
-	vector<int> inRow;
-	vector<int> inCol;
-	vector<int> inSquare;
-
-	//conflict vectors
-	vector<int> vertConflicts;
-	vector<int> horzConflicts;
-	vector<int> squareConflicts;
+	matrix<bool> inRow;
+	matrix<bool> inCol;
+	matrix<bool> inSquare;
 };

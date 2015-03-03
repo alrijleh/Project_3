@@ -26,7 +26,7 @@ int main()
 		{
 			b1.initialize(fin);
 			b1.print();
-			b1.printConflicts();
+			//b1.printConflicts();
 			b1.checkSolved(b1);
 		}
 		system("pause");

@@ -12,9 +12,11 @@ ostream &operator<<(ostream &ostr, vector<T> &v)
 
 board::board()
 {
-	horzConflicts.resize(MaxValue);
-	vertConflicts.resize(MaxValue);
-	squareConflicts.resize(MaxValue);
+
+	int exclusiveMax = MaxValue + 1;
+	inRow.resize(exclusiveMax, exclusiveMax);
+	inCol.resize(exclusiveMax, exclusiveMax);
+	inSquare.resize(exclusiveMax, exclusiveMax);
 }
 
 board::~board()
@@ -25,27 +27,33 @@ board::~board()
 // Board constructor
 board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 {
-	horzConflicts.resize(MaxValue);
-	vertConflicts.resize(MaxValue);
-	squareConflicts.resize(MaxValue);
+	int exclusiveMax = MaxValue + 1;
+	inRow.resize(exclusiveMax, exclusiveMax);
+	inCol.resize(exclusiveMax, exclusiveMax);
+	inSquare.resize(exclusiveMax, exclusiveMax);
 }
 
 // Return the square number of cell i,j (counting from left to right,
-// top to bottom.  Note that i and j each go from 1 to BoardSize
+// top to bottom.  Note that i and j each go from 0 to BoardSize - 1
 int board::squareNumber(int i, int j)
 {
 	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
 	// coordinates of the square that i,j is in.  
 
-	return SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1;
+	return (SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1) - 1;
 }
 
 // Mark all possible values as legal for each board entry
-void board::clear(int row, int col)
+void board::clear(int i, int j)
 {
-	int prevValue = value[row][col];
-	value[row][col] = 0;
-													//NEEDS TO REDUCE CONFLICT / COUNT VECTORS
+	int prevValue = value[i][j];
+	int squareNum = squareNumber(i, j);
+	value[i][j] = Blank;
+	
+	//Clears recording from vector
+	inRow[j][prevValue] = false;
+	inCol[i][prevValue] = false;
+	inSquare[squareNum][prevValue] = false;
 }
 
 // SetCell function to define a value to a cell as well as update the
@@ -74,14 +82,8 @@ void board::initialize(ifstream &fin)
 			if (ch != '.')
 			{
 				ch = ch - '0'; // Convert char to int
-				//if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
-				//{
-					setCell(i, j, ch);
-				//}
-				//else
-				//{
-					//throw rangeError("invalid input board");
-				//}
+				setCell(i, j, ch);
+				updateVectors(i , j , ch);
 			}
 			else
 			{
@@ -91,79 +93,18 @@ void board::initialize(ifstream &fin)
 	}
 }
 
-//prints the conflicts
-void board::printConflicts()
-{
-	cout << "vertical conflicts: " << vertConflicts << endl;
-	cout << "horizantal conflicts: " << horzConflicts << endl;
-	cout << "square conflicts: " << squareConflicts << endl;
-}
-
-//returns true if a conflict is found
-//returns false if the move is legal
-bool board::checkConflicts(int i, int j, int v)
-{
-	if (checkHorzConflict(i, j, v)
-		|| checkVertConflict(i, j, v)
-		|| checkSquareConflict(i, j, v))
-	{
-		return true;
-	}
-	else return false;
-}
-
-bool board::checkVertConflict(int i, int j, int v)
-{
-	bool conflict = false;
-	for (int index = 0; index < MaxValue; index++)
-	{
-		if (value[i][index] == v)
-		{
-			vertConflicts[j]++;
-			conflict = true;
-		}
-	}
-	return conflict;
-}
-
-bool board::checkHorzConflict(int i, int j, int v)
-{
-	bool conflict = false;
-	for (int index = 0; index < MaxValue; index++)
-	{
-		if (value[index][j] == v)
-		{
-			horzConflicts[i]++;
-			conflict = true;
-		}
-	}
-	return conflict;
-}
-
-bool board::checkSquareConflict(int i, int j, int v)
+void board::updateVectors(int i, int j, int v)
 {
 	int squareNum = squareNumber(i, j);
-	int squareWidth = sqrt(MaxValue);
 
-	int baseI = ((squareNum - 1) % squareWidth) * squareWidth;
-	int baseJ = ((squareNum - 1) / squareWidth) * squareWidth;
-	int maxI = baseI + squareWidth;
-	int maxJ = baseJ + squareWidth;
+	inRow[j][v] = true;
+	inCol[i][v] = true;
+	inSquare[squareNum][v] = true;
+}
 
-	bool conflict = false;
-
-	for (int x = baseI; x < maxI; x++)
-	{
-		for (int y = baseJ; y < maxJ; y++)
-		{
-			if (value[x][y] == v)
-			{
-				squareConflicts[squareNum]++;
-				conflict = true;
-			}
-		}
-	}
-	return conflict;
+bool board::checkConflicts(int i, int j, int v)
+{
+	return (inRow[j][v] || inCol[i][v] || inSquare[i][j]);
 }
 
 // Returns the value stored in a cell.  Throws an exception
