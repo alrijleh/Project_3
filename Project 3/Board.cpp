@@ -1,3 +1,9 @@
+/*
+Board.cpp
+Contains funcitonality for the board class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #include "Board.h"
 
 // Overloaded output operator for vector class.
@@ -12,9 +18,11 @@ ostream &operator<<(ostream &ostr, vector<T> &v)
 
 board::board()
 {
-	horzConflicts.resize(MaxValue);
-	vertConflicts.resize(MaxValue);
-	squareConflicts.resize(MaxValue);
+
+	int exclusiveMax = MaxValue + 1;
+	inRow.resize(exclusiveMax, exclusiveMax);
+	inCol.resize(exclusiveMax, exclusiveMax);
+	inSquare.resize(exclusiveMax, exclusiveMax);
 }
 
 board::~board()
@@ -25,9 +33,10 @@ board::~board()
 // Board constructor
 board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 {
-	horzConflicts.resize(MaxValue);
-	vertConflicts.resize(MaxValue);
-	squareConflicts.resize(MaxValue);
+	int exclusiveMax = MaxValue + 1;
+	inRow.resize(exclusiveMax, exclusiveMax);
+	inCol.resize(exclusiveMax, exclusiveMax);
+	inSquare.resize(exclusiveMax, exclusiveMax);
 }
 
 // Return the square number of cell i,j (counting from left to right,
@@ -37,15 +46,38 @@ int board::squareNumber(int i, int j)
 	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
 	// coordinates of the square that i,j is in.  
 
-	return SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1;
+	return (SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1);
+}
+
+void board::clearBoard()
+{
+	//There should be a better way to do this
+	int exclusiveMax = MaxValue + 1;
+	for (int index = 0; index <= MaxValue; index++)
+	{
+		inRow[index].clear();
+		inCol[index].clear();
+		inSquare[index].clear();
+		value[index].clear();
+
+		inRow[index].resize(exclusiveMax);
+		inCol[index].resize(exclusiveMax);
+		inSquare[index].resize(exclusiveMax);
+		value[index].resize(exclusiveMax);
+	}
 }
 
 // Mark all possible values as legal for each board entry
-void board::clear(int row, int col)
+void board::clearCell(int i, int j)
 {
-	int prevValue = value[row][col];
-	value[row][col] = 0;
-													//NEEDS TO REDUCE CONFLICT / COUNT VECTORS
+	int prevValue = value[i][j];
+	int squareNum = squareNumber(i, j);
+	value[i][j] = Blank;
+	
+	//Clears recording from vector
+	inRow[j][prevValue] = false;
+	inCol[i][prevValue] = false;
+	inSquare[squareNum][prevValue] = false;
 }
 
 // SetCell function to define a value to a cell as well as update the
@@ -53,26 +85,28 @@ void board::clear(int row, int col)
 void board::setCell(int row, int col, int v)
 {
 	// Set cell value
-	if (v >= MinValue && v <= MaxValue) value[row][col] = v;
+	if ((v >= MinValue && v <= MaxValue) || v == Blank) value[row][col] = v;
 	else throw rangeError("Value in grid must be between MinValue and MaxValue");
 }
 
 // Read a Sudoku board from the input file.
 void board::initialize(ifstream &fin)
 {
+	clearBoard();
 	char ch;
 	/*int i = 1, j = 1;
 	clear(i, j);*/
 
-	for (int i = 0; i < BoardSize; i++)
+	for (int i = 1; i <= BoardSize; i++)
 	{
-		for (int j = 0; j < BoardSize; j++)
+		for (int j = 1; j <= BoardSize; j++)
 		{
 			fin >> ch;
 
 			// If the read char is not Blank
 			if (ch != '.')
 			{
+<<<<<<< HEAD
 				ch = ch - '0'; // Convert char to int
 				//if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
 				//{
@@ -89,69 +123,49 @@ void board::initialize(ifstream &fin)
 					{
 						setCell(i, j, ch);
 					}
+=======
+				int v = int(ch - '0'); // Convert char to int
+				if (!checkConflicts(i, j, v))
+				{
+					setCell(i, j, v);
+					updateVectors(i, j, v);
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 				}
 				catch (indexRangeError &ex)
 				{
+<<<<<<< HEAD
 					cout << ex.what() << endl;
 					exit(1);
+=======
+					int squareNum = squareNumber(i, j);
+					if (inRow[j][v]) cout << "row " << j;
+					if (inCol[i][v]) cout << "column " << i;
+					if (inSquare[squareNum][v]) cout << "square " << squareNum;
+					throw rangeError("Invalid input board");
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 				}
+			}
+			else
+			{
+				setCell(i, j, Blank);
 			}
 		}
 	}
 }
 
-//prints the conflicts
-void board::printConflicts()
-{
-	cout << "vertical conflicts: " << vertConflicts << endl;
-	cout << "horizantal conflicts: " << horzConflicts << endl;
-	cout << "square conflicts: " << squareConflicts << endl;
-}
-
-//returns true if a conflict is found
-//returns false if the move is legal
-bool board::checkConflicts(int i, int j, int v)
-{
-	if (checkHorzConflict(i, j, v)
-		|| checkVertConflict(i, j, v)
-		|| checkSquareConflict(i, j, v))
-	{
-		return true;
-	}
-	else return false;
-}
-
-bool board::checkVertConflict(int i, int j, int v)
-{
-	bool conflict = false;
-	for (int index = 0; index < MaxValue; index++)
-	{
-		if (value[i][index] == v)
-		{
-			vertConflicts[j]++;
-			conflict = true;
-		}
-	}
-	return conflict;
-}
-
-bool board::checkHorzConflict(int i, int j, int v)
-{
-	bool conflict = false;
-	for (int index = 0; index < MaxValue; index++)
-	{
-		if (value[index][j] == v)
-		{
-			horzConflicts[i]++;
-			conflict = true;
-		}
-	}
-	return conflict;
-}
-
-bool board::checkSquareConflict(int i, int j, int v)
+void board::updateVectors(int i, int j, int v)
 {
 	int squareNum = squareNumber(i, j);
+
+	inRow[j][v] = true;
+	inCol[i][v] = true;
+	inSquare[squareNum][v] = true;
+}
+
+bool board::checkConflicts(int i, int j, int v)
+{
+	int squareNum = squareNumber(i, j);
+<<<<<<< HEAD
 	int squareWidth = sqrt(MaxValue);
 
 	int baseI = ((squareNum - 1) % squareWidth) * squareWidth;
@@ -173,6 +187,9 @@ bool board::checkSquareConflict(int i, int j, int v)
 		}
 	}
 	return conflict;
+=======
+	return (inRow[j][v] || inCol[i][v] || inSquare[squareNum][v]);
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 }
 
 // Returns the value stored in a cell.  Throws an exception
@@ -235,7 +252,7 @@ bool board::checkSolved(board b)
 		for (int j = 1; j <= BoardSize; j++)
 		{
 			//If any cells are 0, board is not solved.
-			if (b.getCell(i, j) == 0)
+			if (b.getCell(i, j) == Blank)
 			{
 				cout << "Board is not solved." << endl;
 				return false;

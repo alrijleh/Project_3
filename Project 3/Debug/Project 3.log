@@ -1,16 +1,34 @@
+<<<<<<< HEAD
 ﻿Build started 3/1/2015 4:20:10 PM.
      1>Project "C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Project 3\Project 3.vcxproj" on node 2 (Build target(s)).
+=======
+﻿Build started 3/2/2015 8:46:11 PM.
+     1>Project "C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Project 3\Project 3.vcxproj" on node 2 (Build target(s)).
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Board.cpp
          Board.cpp
+<<<<<<< HEAD
      1>c:\users\rachel rudolph\documents\fund. of algorithms\project_3\project 3\board.cpp(55): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\rachel rudolph\documents\fund. of algorithms\project_3\project 3\board.cpp(76): warning C4715: 'board::isBlank' : not all control paths return a value
+=======
+         Generating Code...
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Debug\Project 3.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Debug\Project 3.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Debug\Project 3.lib" /MACHINE:X86 Debug\Board.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Debug\Project 3.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Debug\Project 3.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Debug\Project 3.lib" /MACHINE:X86 Debug\Board.obj
          Debug\Main.obj
+<<<<<<< HEAD
          Project 3.vcxproj -> C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Debug\Project 3.exe
      1>Done Building Project "C:\Users\Rachel Rudolph\Documents\Fund. of Algorithms\Project_3\Project 3\Project 3.vcxproj" (Build target(s)).
 
 Build succeeded.
 
 Time Elapsed 00:00:03.19
+=======
+         Project 3.vcxproj -> C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Debug\Project 3.exe
+     1>Done Building Project "C:\Users\Fouad\Google Drive\Class\Algorithms\Projects\Project 3\Project 3\Project 3.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.60
+>>>>>>> 1496c43df422743189f983b5b63627184b93a8ff

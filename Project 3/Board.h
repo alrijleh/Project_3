@@ -1,3 +1,9 @@
+/*
+Board.h
+Contains funcitonality for the board class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #pragma once
 
 #include <iostream>
@@ -19,9 +25,10 @@ public:
 	~board();
 	board(int);
 
-	void clear(int i, int j);
+	void clearCell(int i, int j);
 	void setCell(int row, int col, int v);
 	void initialize(ifstream &fin);
+	void clearBoard();
 	
 	void print();
 	bool isBlank(int, int);
@@ -29,10 +36,9 @@ public:
 	int squareNumber(int i, int j);
 	bool checkSolved(board b);
 
+	void updateVectors(int i, int j, int v);
+
 	bool checkConflicts(int i, int j, int v);
-	bool checkVertConflict(int i, int j, int v);
-	bool checkHorzConflict(int i, int j, int v);
-	bool checkSquareConflict(int i, int j, int v);
 	void printConflicts();
 
 private:
@@ -42,12 +48,7 @@ private:
 	matrix<ValueType> value;
 
 	//counters
-	vector<int> inRow;
-	vector<int> inCol;
-	vector<int> inSquare;
-
-	//conflict vectors
-	vector<int> vertConflicts;
-	vector<int> horzConflicts;
-	vector<int> squareConflicts;
+	matrix<bool> inRow;
+	matrix<bool> inCol;
+	matrix<bool> inSquare;
 };
