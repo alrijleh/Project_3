@@ -18,7 +18,6 @@ ostream &operator<<(ostream &ostr, vector<T> &v)
 
 board::board()
 {
-
 	int exclusiveMax = MaxValue + 1;
 	inRow.resize(exclusiveMax, exclusiveMax);
 	inCol.resize(exclusiveMax, exclusiveMax);
@@ -45,7 +44,6 @@ int board::squareNumber(int i, int j)
 {
 	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
 	// coordinates of the square that i,j is in.  
-
 	return (SquareSize * ((i - 1) / SquareSize) + (j - 1) / SquareSize + 1);
 }
 
@@ -94,8 +92,6 @@ void board::initialize(ifstream &fin)
 {
 	clearBoard();
 	char ch;
-	/*int i = 1, j = 1;
-	clear(i, j);*/
 
 	for (int i = 1; i <= BoardSize; i++)
 	{
@@ -106,43 +102,19 @@ void board::initialize(ifstream &fin)
 			// If the read char is not Blank
 			if (ch != '.')
 			{
-<<<<<<< HEAD
-				ch = ch - '0'; // Convert char to int
-				//if ( !checkConflicts(i, j, ch) ) //if there are no conflicts
-				//{
-				//	setCell(i, j, ch);
-				//}
-				//else
-				//{
-				//	throw rangeError("invalid input board");
-				//}
-
-				try
-				{
-					if (!checkConflicts(i, j, ch)) //if there are no conflicts
-					{
-						setCell(i, j, ch);
-					}
-=======
 				int v = int(ch - '0'); // Convert char to int
 				if (!checkConflicts(i, j, v))
 				{
 					setCell(i, j, v);
 					updateVectors(i, j, v);
->>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 				}
-				catch (indexRangeError &ex)
+				else
 				{
-<<<<<<< HEAD
-					cout << ex.what() << endl;
-					exit(1);
-=======
 					int squareNum = squareNumber(i, j);
 					if (inRow[j][v]) cout << "row " << j;
 					if (inCol[i][v]) cout << "column " << i;
 					if (inSquare[squareNum][v]) cout << "square " << squareNum;
 					throw rangeError("Invalid input board");
->>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 				}
 			}
 			else
@@ -165,31 +137,7 @@ void board::updateVectors(int i, int j, int v)
 bool board::checkConflicts(int i, int j, int v)
 {
 	int squareNum = squareNumber(i, j);
-<<<<<<< HEAD
-	int squareWidth = sqrt(MaxValue);
-
-	int baseI = ((squareNum - 1) % squareWidth) * squareWidth;
-	int baseJ = ((squareNum - 1) / squareWidth) * squareWidth;
-	int maxI = baseI + squareWidth;
-	int maxJ = baseJ + squareWidth;
-
-	bool conflict = false;
-
-	for (int x = baseI; x < maxI; x++)
-	{
-		for (int y = baseJ; y < maxJ; y++)
-		{
-			if (value[x][y] == v)
-			{
-				squareConflicts[squareNum-1]++;
-				conflict = true;
-			}
-		}
-	}
-	return conflict;
-=======
 	return (inRow[j][v] || inCol[i][v] || inSquare[squareNum][v]);
->>>>>>> 1496c43df422743189f983b5b63627184b93a8ff
 }
 
 // Returns the value stored in a cell.  Throws an exception
@@ -209,6 +157,32 @@ bool board::isBlank(int i, int j)
 		throw rangeError("bad value in setCell");
 
 	return (getCell(i, j) == Blank);
+}
+
+void board::solve(board b)
+{
+	if (checkSolved(b)) return;
+	
+	for (int i = 0; i < BoardSize; i++)
+	{
+		for (int j = 0; j < BoardSize; j++)
+		{
+			findNextBlank(i, j);
+		}
+	}
+}
+
+ValueType board::findNextBlank(int i, int j)
+{
+	for (int i = 0; i < BoardSize; i++)
+	{
+		for (int j = 0; j < BoardSize; j++)
+		{
+			if (getCell(i, j) == Blank)
+				return getCell(i, j);
+		}
+	}
+	
 }
 
 // Prints the current board.
@@ -245,7 +219,7 @@ void board::print()
 }
 
 void board::printConflicts() {
-	cout << "Conflicts for Rows" << endl;
+	cout << "Conflicts for Rows " << endl;
 	for (int i = 0; i < BoardSize; i++)
 	{
 		for (int j = 0; j < BoardSize; j++)
@@ -255,7 +229,7 @@ void board::printConflicts() {
 		cout << endl;
 	}
 
-	cout << "Conflicts for Columns" << endl;
+	cout << "Conflicts for Columns " << endl;
 	for (int i = 0; i < BoardSize; i++)
 	{
 		for (int j = 0; j < BoardSize; j++)
@@ -265,7 +239,7 @@ void board::printConflicts() {
 		cout << endl;
 	}
 
-	cout << "Conflicts for Squares" << endl;
+	cout << "Conflicts for Squares " << endl;
 	for (int i = 0; i < BoardSize; i++)
 	{
 		for (int j = 0; j < BoardSize; j++)

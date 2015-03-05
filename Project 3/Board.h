@@ -36,6 +36,9 @@ public:
 	int squareNumber(int i, int j);
 	bool checkSolved(board b);
 
+	void solve(board b);
+	ValueType findNextBlank(int, int);
+
 	void updateVectors(int i, int j, int v);
 
 	bool checkConflicts(int i, int j, int v);
