@@ -244,6 +244,38 @@ void board::print()
 	cout << endl;
 }
 
+void board::printConflicts() {
+	cout << "Conflicts for Rows" << endl;
+	for (int i = 0; i < BoardSize; i++)
+	{
+		for (int j = 0; j < BoardSize; j++)
+		{
+			cout << inRow[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Conflicts for Columns" << endl;
+	for (int i = 0; i < BoardSize; i++)
+	{
+		for (int j = 0; j < BoardSize; j++)
+		{
+			cout << inCol[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Conflicts for Squares" << endl;
+	for (int i = 0; i < BoardSize; i++)
+	{
+		for (int j = 0; j < BoardSize; j++)
+		{
+			cout << inSquare[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
 //Check to see if board is solved
 bool board::checkSolved(board b)
 {
