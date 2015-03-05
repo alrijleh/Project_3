@@ -34,10 +34,10 @@ public:
 	bool isBlank(int, int);
 	ValueType getCell(int, int);	
 	int squareNumber(int i, int j);
-	bool checkSolved(board b);
+	bool checkSolved();
 
-	void solve(board b);
-	ValueType findNextBlank(int, int);
+	void solve();
+	vector<int> findNextBlank();
 
 	void updateVectors(int i, int j, int v);
 

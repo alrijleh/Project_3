@@ -69,6 +69,7 @@ void board::clearBoard()
 void board::clearCell(int i, int j)
 {
 	int prevValue = value[i][j];
+	//if (prevValue == Blank) throw rangeError("Cannot clear empty cell");
 	int squareNum = squareNumber(i, j);
 	value[i][j] = Blank;
 	
@@ -159,30 +160,47 @@ bool board::isBlank(int i, int j)
 	return (getCell(i, j) == Blank);
 }
 
-void board::solve(board b)
+void board::solve()
 {
-	if (checkSolved(b)) return;
+	print();
+	vector<int> location(2, -1);
+
+	if (checkSolved()) return;
 	
-	for (int i = 0; i < BoardSize; i++)
+	location = findNextBlank();
+	int i = location[0];
+	int j = location[1];
+
+	for (int v = 1; v <= MaxValue; v++)
 	{
-		for (int j = 0; j < BoardSize; j++)
+		if (!checkConflicts(i, j, v))
 		{
-			findNextBlank(i, j);
+			setCell(i, j, v);
+			updateVectors(i, j, v);
+			solve();
 		}
+
 	}
+
+	clearCell(i, j);
+
 }
 
-ValueType board::findNextBlank(int i, int j)
+vector<int> board::findNextBlank()
 {
-	for (int i = 0; i < BoardSize; i++)
+	vector<int> location(2, -1);
+	for (int i = 1; i <= BoardSize; i++)
 	{
-		for (int j = 0; j < BoardSize; j++)
+		for (int j = 1; j <= BoardSize; j++)
 		{
 			if (getCell(i, j) == Blank)
-				return getCell(i, j);
+			{
+				location = { i, j };
+				return location;
+			}
 		}
 	}
-	
+	return location;
 }
 
 // Prints the current board.
@@ -251,14 +269,14 @@ void board::printConflicts() {
 }
 
 //Check to see if board is solved
-bool board::checkSolved(board b)
+bool board::checkSolved()
 {
 	for (int i = 1; i <= BoardSize; i++)
 	{
 		for (int j = 1; j <= BoardSize; j++)
 		{
 			//If any cells are 0, board is not solved.
-			if (b.getCell(i, j) == Blank)
+			if (value[i][j] == Blank)
 			{
 				cout << "Board is not solved." << endl;
 				return false;
