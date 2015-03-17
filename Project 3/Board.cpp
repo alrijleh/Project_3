@@ -31,7 +31,7 @@ board::~board()
 }
 
 // Board constructor
-board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
+board::board(int squareSize) : value(BoardSize + 1, BoardSize + 1)
 {
 	int exclusiveMax = MaxValue + 1;
 	int counter = 0;
@@ -76,7 +76,7 @@ void board::clearCell(int i, int j)
 	//if (prevValue == Blank) throw rangeError("Cannot clear empty cell");
 	int squareNum = squareNumber(i, j);
 	value[i][j] = Blank;
-	
+
 	//Clears recording from vector
 	inRow[j][prevValue] = false;
 	inCol[i][prevValue] = false;
@@ -175,25 +175,31 @@ void board::solve()
 	if (checkSolved())
 	{
 		print();
+		cout << "Solved." << endl;
+		cout << "Number of iterations: " << counter << endl;
 		return;
 	}
-
-	vector<int> location(2, -1);
-	location = findBestBlank();
-	int i = location[0];
-	int j = location[1];
-
-	for (int v = 1; v <= MaxValue; v++)
+	else
 	{
-		if (!checkConflicts(i, j, v))
+		vector<int> location(2, -1);
+		location = findBestBlank();
+		int i = location[0];
+		int j = location[1];
+
+		for (int v = 1; v <= MaxValue; v++)
 		{
-			setCell(i, j, v);
-			updateVectors(i, j, v);
-			solve();
-			clearCell(i, j);
+			if (!checkConflicts(i, j, v))
+			{
+				setCell(i, j, v);
+				updateVectors(i, j, v);
+				solve();
+				clearCell(i, j);
+			}
 		}
+		clearCell(i, j);
 	}
-	clearCell(i, j);
+
+
 }
 
 int board::countPossibleValues(int i, int j)

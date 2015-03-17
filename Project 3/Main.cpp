@@ -33,9 +33,8 @@ int main()
 			b1.initialize(fin);
 			b1.print();
 			b1.solve();
-			if (b1.checkSolved()) cout << "Solved." << endl;
-			cout << "Number of iterations: " << b1.getCounter() << endl;
-			system("pause");
+			//cout << "Number of iterations: " << b1.getCounter() << endl;
+			//system("pause");
 		}
 		system("pause");
 	}
