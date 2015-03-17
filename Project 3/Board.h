@@ -40,7 +40,7 @@ public:
 
 	void solve();
 	int board::countPossibleValues(int i, int j);
-	int board::findMinimum(vector<Cell> cellVector);
+	vector<int> board::findMinimumLocation(vector<Cell> cellVector);
 	vector<int> findNextBlank();
 	vector<int> findBestBlank();
 

@@ -170,13 +170,14 @@ bool board::isBlank(int i, int j)
 void board::solve()
 {
 	counter++;
+	if (checkSolved())
+	{
+		print();
+		return;
+	}
 
-	print();
 	vector<int> location(2, -1);
-
-	if (checkSolved()) return;
-	
-	location = findNextBlank();
+	location = findBestBlank();
 	int i = location[0];
 	int j = location[1];
 
@@ -195,7 +196,7 @@ void board::solve()
 
 int board::countPossibleValues(int i, int j)
 {
-	int possibilities;
+	int possibilities = 0;
 	for (int v = 1; v <= MaxValue; v++)
 	{
 		if (!checkConflicts(i, j, v))
@@ -208,7 +209,7 @@ int board::countPossibleValues(int i, int j)
 
 vector<int> board::findBestBlank()
 {
-	int possibilities, minimum;
+	int possibilities;
 	vector<int> location(2, -1);
 	vector<Cell> possibleValueList;
 	Cell cell;
@@ -226,7 +227,6 @@ vector<int> board::findBestBlank()
 				}
 				else
 				{
-					//minimum = findMinimum(possibleValueList);
 					cell.setLocation(i, j);
 					cell.setValue(possibilities);
 					possibleValueList.push_back(cell);
@@ -234,23 +234,24 @@ vector<int> board::findBestBlank()
 			}
 		}
 	}
-
-
+	location = findMinimumLocation(possibleValueList);
 	return location;
 }
 
-int board::findMinimum(vector<Cell> cellVector)
+vector<int> board::findMinimumLocation(vector<Cell> cellVector)
 {
-	int minimum;
+	int minimum = 9;
+	vector<int> minimumLocation;
 	for (int index = 0; index < cellVector.size(); index++)
 	{
-		if (minimum > cellVector[index].getValue())
+		if (cellVector[index].getValue() < minimum)
 		{
 			minimum = cellVector[index].getValue();
+			minimumLocation = cellVector[index].getLocation();
 		}
 	}
 
-	return minimum;
+	return minimumLocation;
 }
 
 vector<int> board::findNextBlank()
@@ -345,12 +346,9 @@ bool board::checkSolved()
 			//If any cells are blank, board is not solved.
 			if (value[i][j] == Blank)
 			{
-				cout << "Board is not solved." << endl;
 				return false;
 			}
 		}
 	}
-
-	cout << "Board solved." << endl;
 	return true;
 }
