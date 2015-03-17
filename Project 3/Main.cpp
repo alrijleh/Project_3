@@ -35,6 +35,7 @@ int main()
 			b1.solve();
 			//b1.printConflicts();
 			b1.checkSolved();
+			cout << "Number of iterations: " << b1.getCounter() << endl;
 			system("pause");
 		}
 		system("pause");

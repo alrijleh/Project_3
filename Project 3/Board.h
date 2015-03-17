@@ -31,6 +31,7 @@ public:
 	void clearBoard();
 	
 	void print();
+	int getCounter();
 	bool isBlank(int, int);
 	ValueType getCell(int, int);	
 	int squareNumber(int i, int j);
@@ -38,6 +39,8 @@ public:
 
 	void solve();
 	vector<int> findNextBlank();
+	vector<int> findBestBlank();
+
 
 	void updateVectors(int i, int j, int v);
 
@@ -49,6 +52,7 @@ private:
 	// dimension.  I.e. they are each (BoardSize+1) X (BoardSize+1)
 
 	matrix<ValueType> value;
+	int counter;
 
 	//counters
 	matrix<bool> inRow;

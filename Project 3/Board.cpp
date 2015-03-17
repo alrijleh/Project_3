@@ -19,6 +19,7 @@ ostream &operator<<(ostream &ostr, vector<T> &v)
 board::board()
 {
 	int exclusiveMax = MaxValue + 1;
+	int counter = 0;
 	inRow.resize(exclusiveMax, exclusiveMax);
 	inCol.resize(exclusiveMax, exclusiveMax);
 	inSquare.resize(exclusiveMax, exclusiveMax);
@@ -33,6 +34,7 @@ board::~board()
 board::board(int squareSize): value(BoardSize + 1, BoardSize + 1)	
 {
 	int exclusiveMax = MaxValue + 1;
+	int counter = 0;
 	inRow.resize(exclusiveMax, exclusiveMax);
 	inCol.resize(exclusiveMax, exclusiveMax);
 	inSquare.resize(exclusiveMax, exclusiveMax);
@@ -86,6 +88,11 @@ void board::setCell(int row, int col, int v)
 	// Set cell value
 	if ((v >= MinValue && v <= MaxValue) || v == Blank) value[row][col] = v;
 	else throw rangeError("Value in grid must be between MinValue and MaxValue");
+}
+
+int board::getCounter()
+{
+	return counter;
 }
 
 // Read a Sudoku board from the input file.
@@ -177,6 +184,7 @@ void board::solve()
 		{
 			setCell(i, j, v);
 			updateVectors(i, j, v);
+			counter++;
 			solve();
 		}
 
@@ -184,6 +192,19 @@ void board::solve()
 
 	clearCell(i, j);
 
+}
+
+vector<int> board::findBestBlank()
+{
+	vector<int> location(2, -1);
+	for (int i = 1; i <= BoardSize; i++)
+	{
+		for (int j = 1; j <= BoardSize; j++)
+		{
+			
+		}
+	}
+	return location;
 }
 
 vector<int> board::findNextBlank()
@@ -275,7 +296,7 @@ bool board::checkSolved()
 	{
 		for (int j = 1; j <= BoardSize; j++)
 		{
-			//If any cells are 0, board is not solved.
+			//If any cells are blank, board is not solved.
 			if (value[i][j] == Blank)
 			{
 				cout << "Board is not solved." << endl;
