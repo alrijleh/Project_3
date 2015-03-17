@@ -1,3 +1,10 @@
+/*
+Cell.cpp
+Contains funcitonality for the cell class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
+
 #include "Cell.h"
 
 void Cell::setLocation(int i, int j)

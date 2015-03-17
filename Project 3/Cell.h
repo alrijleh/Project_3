@@ -1,3 +1,10 @@
+/*
+Cell.h
+Contains funcitonality for the cell class
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
+
 #pragma once
 
 #include "d_matrix.h"

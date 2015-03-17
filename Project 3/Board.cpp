@@ -92,6 +92,7 @@ void board::setCell(int row, int col, int v)
 	else throw rangeError("Value in grid must be between MinValue and MaxValue");
 }
 
+//Get counter of iterations
 int board::getCounter()
 {
 	return counter;
@@ -135,6 +136,7 @@ void board::initialize(ifstream &fin)
 	}
 }
 
+//Update bool vectors
 void board::updateVectors(int i, int j, int v)
 {
 	int squareNum = squareNumber(i, j);
@@ -144,6 +146,7 @@ void board::updateVectors(int i, int j, int v)
 	inSquare[squareNum][v] = true;
 }
 
+//Check for conflicts within row, col, sq
 bool board::checkConflicts(int i, int j, int v)
 {
 	int squareNum = squareNumber(i, j);
@@ -169,9 +172,13 @@ bool board::isBlank(int i, int j)
 	return (getCell(i, j) == Blank);
 }
 
+//Solve sudoku board
 void board::solve()
 {
+	//Counts number of times solve() is called
 	counter++;
+
+	//Check if board is already solved
 	if (checkSolved())
 	{
 		print();
@@ -202,6 +209,7 @@ void board::solve()
 
 }
 
+//Count possible values for each cell in board
 int board::countPossibleValues(int i, int j)
 {
 	int possibilities = 0;
@@ -215,6 +223,7 @@ int board::countPossibleValues(int i, int j)
 	return possibilities;
 }
 
+//Find blank cell with least amount of possibilities
 vector<int> board::findBestBlank()
 {
 	int possibilities;
@@ -246,6 +255,7 @@ vector<int> board::findBestBlank()
 	return location;
 }
 
+//Find location of cell with fewest possibilites
 vector<int> board::findMinimumLocation(vector<Cell> cellVector)
 {
 	int minimum = 9;
@@ -262,6 +272,7 @@ vector<int> board::findMinimumLocation(vector<Cell> cellVector)
 	return minimumLocation;
 }
 
+//Find next blank cell in board
 vector<int> board::findNextBlank()
 {
 	vector<int> location(2, -1);
@@ -312,6 +323,7 @@ void board::print()
 	cout << endl;
 }
 
+//Print conflicts in board
 void board::printConflicts() {
 	cout << "Conflicts for Rows " << endl;
 	for (int i = 0; i < BoardSize; i++)
