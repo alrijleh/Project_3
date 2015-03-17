@@ -169,6 +169,8 @@ bool board::isBlank(int i, int j)
 
 void board::solve()
 {
+	counter++;
+
 	print();
 	vector<int> location(2, -1);
 
@@ -184,8 +186,8 @@ void board::solve()
 		{
 			setCell(i, j, v);
 			updateVectors(i, j, v);
-			counter++;
 			solve();
+			clearCell(i, j);
 		}
 
 	}
