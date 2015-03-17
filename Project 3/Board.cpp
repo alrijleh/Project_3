@@ -189,24 +189,68 @@ void board::solve()
 			solve();
 			clearCell(i, j);
 		}
-
 	}
-
 	clearCell(i, j);
+}
 
+int board::countPossibleValues(int i, int j)
+{
+	int possibilities;
+	for (int v = 1; v <= MaxValue; v++)
+	{
+		if (!checkConflicts(i, j, v))
+		{
+			possibilities++;
+		}
+	}
+	return possibilities;
 }
 
 vector<int> board::findBestBlank()
 {
+	int possibilities, minimum;
 	vector<int> location(2, -1);
+	vector<Cell> possibleValueList;
+	Cell cell;
 	for (int i = 1; i <= BoardSize; i++)
 	{
 		for (int j = 1; j <= BoardSize; j++)
 		{
-			
+			if (getCell(i, j) == Blank)
+			{
+				possibilities = countPossibleValues(i, j);
+				if (possibilities == 1)
+				{
+					location = { i, j };
+					return location;
+				}
+				else
+				{
+					//minimum = findMinimum(possibleValueList);
+					cell.setLocation(i, j);
+					cell.setValue(possibilities);
+					possibleValueList.push_back(cell);
+				}
+			}
 		}
 	}
+
+
 	return location;
+}
+
+int board::findMinimum(vector<Cell> cellVector)
+{
+	int minimum;
+	for (int index = 0; index < cellVector.size(); index++)
+	{
+		if (minimum > cellVector[index].getValue())
+		{
+			minimum = cellVector[index].getValue();
+		}
+	}
+
+	return minimum;
 }
 
 vector<int> board::findNextBlank()

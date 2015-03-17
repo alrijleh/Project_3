@@ -11,6 +11,7 @@ Fouad Al-Rijleh, Rachel Rudolph
 #include "d_matrix.h"
 #include "d_except.h"
 #include "Constants.h"
+#include "Cell.h"
 #include <list>
 #include <fstream>
 #include <vector>
@@ -38,9 +39,10 @@ public:
 	bool checkSolved();
 
 	void solve();
+	int board::countPossibleValues(int i, int j);
+	int board::findMinimum(vector<Cell> cellVector);
 	vector<int> findNextBlank();
 	vector<int> findBestBlank();
-
 
 	void updateVectors(int i, int j, int v);
 
