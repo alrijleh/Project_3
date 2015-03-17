@@ -64,6 +64,8 @@ void board::clearBoard()
 		inCol[index].resize(exclusiveMax);
 		inSquare[index].resize(exclusiveMax);
 		value[index].resize(exclusiveMax);
+
+		counter = 0;
 	}
 }
 
